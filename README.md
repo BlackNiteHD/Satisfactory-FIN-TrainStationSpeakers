@@ -25,7 +25,7 @@ A direct text to speech is not possible.
 5. Connect the computer to the station and speaker with network cables
 6. Download the contents of this repository
 7. Copy & Paste the content of the "eeprom.lua" file into the in-game code editor
-8. Copy & Paste the full "Sounds" folder into "%localappdata\FactoryGame\Saved\SaveGames\Computers\%"
+8. Copy & Paste the full "Sounds" folder into "%localappdata%\FactoryGame\Saved\SaveGames\Computers\"
 9. If the "Computers" folder does not exist, create it
 10. Edit the customizable values in the code (the code is commented so you should have no trouble figuring out what does what)
 11. Start the computer
