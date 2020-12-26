@@ -10,7 +10,7 @@ USE_CUSTOM_AUDIO = true                                       -- If this is set 
 CALCULATION_INTERVAL = 2									  -- The interval (seconds) in which the distance between the tailed trains and the station is calculated
 
 -- VARIABLES USED BY THE PROGRAM
-stationX, stationY, stationZ = STATION:getLocation() -- We dont actually need stationY... can I just say "_" instead?
+stationX, _, stationZ = STATION:getLocation()
 stationName = STATION.name
 trackGraph = STATION:getTrackGraph()
 trains = trackGraph:getTrains()
@@ -27,7 +27,7 @@ event.listen(SPEAKER)
 -- Optimizations are always welcome.
 -- Just make a pull request on the repository to integrate your changes
 while true do
-    e, pole, state = event.pull(CALCULATION_INTERVAL) -- We dont actually need the pole... can I just say "_" instead?
+    e, _, state = event.pull(CALCULATION_INTERVAL)
 
     for _,train in ipairs(trains) do
         for _,tailedTrain in ipairs(TRAINS_TO_TAIL) do
@@ -37,10 +37,10 @@ while true do
 				-- Prevents the program to run into errors when loading the save
 				-- When loading the save train:getMaster() returns nil
 				if locomotive then
-					trainX, trainY, trainZ = locomotive:getLocation() -- We dont actually need the y coordinate... can I just say "_" instead?
+					trainX, _, trainZ = locomotive:getLocation()
 					-- Why the fuck does math.pow not exist!?
-					distanceX = (stationX * stationX) - (trainX * trainX)
-					distanceZ = (stationZ * stationZ) - (trainZ * trainZ)
+					distanceX = math.abs((stationX * stationX) - (trainX * trainX))
+					distanceZ = math.abs((stationZ * stationZ) - (trainZ * trainZ))
 					distance = math.sqrt(distanceX + distanceZ)
 					timeTable = train:getTimeTable()
 					nextStop = timeTable:getStop(timeTable:getCurrentStop()).station.name
@@ -77,12 +77,6 @@ while true do
 							playing = false
 							stage = 0
 						end
-					end
-
-					-- Is there some easy math function I can use to make sure the value is always positive?
-					-- Would love to just include this directly into the distance calculation
-					if distance < 0 then
-						distance = distance * -1
 					end
 
 					if distance > ANNOUNCEMENT_DISTANCE and inRange then
